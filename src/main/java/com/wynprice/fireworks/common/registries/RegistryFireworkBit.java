@@ -6,11 +6,22 @@ import com.wynprice.fireworks.common.api.FireworkBit;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @EventBusSubscriber(modid=ElytraPyromancy.MODID)
+@ObjectHolder(ElytraPyromancy.MODID)
 public class RegistryFireworkBit {
+	public static final FireworkBit SPEED = FireworkBit.MISSING;
+	public static final FireworkBit SLOW = FireworkBit.MISSING;
+	public static final FireworkBit AUTOFLIGHT = FireworkBit.MISSING;
+
 	@SubscribeEvent
 	public static void onRegistry(RegistryEvent.Register<FireworkBit> event) {
-		event.getRegistry().registerAll(new FireworkBit(RegistryItem.SPEED_BIT, "speed").setRegistryName("speed"));
+		event.getRegistry().registerAll(
+				new FireworkBit(RegistryItem.SPEED_BIT, "speed").setRegistryName("speed"),
+				new FireworkBit(RegistryItem.SLOW_BIT, "slow").setRegistryName("slow"),
+				new FireworkBit(RegistryItem.AUTOFLIGHT_BIT, "autoflight").setRegistryName("autoflight")
+
+		);
 	}
 }

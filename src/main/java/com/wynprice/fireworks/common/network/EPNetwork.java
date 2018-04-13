@@ -1,8 +1,6 @@
 package com.wynprice.fireworks.common.network;
 
 import com.wynprice.fireworks.ElytraPyromancy;
-import com.wynprice.fireworks.common.network.packets.MessagePacket;
-import com.wynprice.fireworks.common.network.packets.MessagePacketSpeedGuiClosed;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,7 +15,6 @@ public class EPNetwork {
 	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ElytraPyromancy.MODID);
 
 	public static void preInit() {
-		registerMessage(MessagePacketSpeedGuiClosed.class, Side.SERVER);
 	}
 	
 	private static int idCount = -1;

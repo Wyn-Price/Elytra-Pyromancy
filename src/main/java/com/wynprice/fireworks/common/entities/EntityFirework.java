@@ -1,12 +1,15 @@
 package com.wynprice.fireworks.common.entities;
 
 import com.wynprice.fireworks.common.data.FireworkData;
+import com.wynprice.fireworks.common.data.FireworkDataHelper;
+import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +37,7 @@ public class EntityFirework extends Entity {
     private int fireworkAge;
     /** The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes. */
     private int lifetime;
-    private EntityLivingBase boostedEntity;
+    private EntityPlayer boostedEntity;
 
     public EntityFirework(World worldIn)
     {
@@ -85,11 +88,11 @@ public class EntityFirework extends Entity {
         this.lifetime = 10 * i + this.rand.nextInt(6) + this.rand.nextInt(7);
     }
 
-    public EntityFirework(World p_i47367_1_, ItemStack p_i47367_2_, EntityLivingBase p_i47367_3_)
+    public EntityFirework(World world, ItemStack stack, EntityPlayer playerIn)
     {
-        this(p_i47367_1_, p_i47367_3_.posX, p_i47367_3_.posY, p_i47367_3_.posZ, p_i47367_2_);
-        this.dataManager.set(BOOSTED_ENTITY_ID, Integer.valueOf(p_i47367_3_.getEntityId()));
-        this.boostedEntity = p_i47367_3_;
+        this(world, playerIn.posX, playerIn.posY, playerIn.posZ, stack);
+        this.dataManager.set(BOOSTED_ENTITY_ID, Integer.valueOf(playerIn.getEntityId()));
+        this.boostedEntity = playerIn;
     }
 
     /**
@@ -111,7 +114,7 @@ public class EntityFirework extends Entity {
             this.prevRotationPitch = this.rotationPitch;
         }
     }
-
+    
     /**
      * Called to update the entity's position/logic.
      */
@@ -128,20 +131,24 @@ public class EntityFirework extends Entity {
             {
                 Entity entity = this.world.getEntityByID(((Integer)this.dataManager.get(BOOSTED_ENTITY_ID)).intValue());
 
-                if (entity instanceof EntityLivingBase)
+                if (entity instanceof EntityPlayer)
                 {
-                    this.boostedEntity = (EntityLivingBase)entity;
+                    this.boostedEntity = (EntityPlayer)entity;
                 }
             }
 
             if (this.boostedEntity != null)
             {
+            	if(FireworkDataHelper.isPlayerHoldingBit(boostedEntity, RegistryFireworkBit.AUTOFLIGHT) && this.ticksExisted < 10 && this.boostedEntity instanceof EntityPlayerMP && !this.boostedEntity.isElytraFlying()){
+            		((EntityPlayerMP)this.boostedEntity).setElytraFlying();
+            	}
                 if (this.boostedEntity.isElytraFlying())
                 {
                     Vec3d vec3d = this.boostedEntity.getLookVec();
-                    ItemStack itemstack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);
-                    FireworkData data = FireworkData.fromStack(itemstack);
-                    double d0 = MathHelper.clamp(data.getSpeed() * 2D, 0D, 10D);
+                    ItemStack itemstack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);//TODO: shit
+//                    FireworkData data = FireworkData.fromStack(itemstack);
+//                    double d0 = MathHelper.clamp(data.getSpeed() * 2D, 0D, 10D);
+                    double d0 = 2;
                     this.boostedEntity.motionX += vec3d.x * d0 - this.boostedEntity.motionX;
                     this.boostedEntity.motionY += vec3d.y * d0 - this.boostedEntity.motionY;
                     this.boostedEntity.motionZ += vec3d.z * d0 - this.boostedEntity.motionZ;
