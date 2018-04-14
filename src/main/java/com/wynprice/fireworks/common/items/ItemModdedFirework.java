@@ -64,9 +64,9 @@ public class ItemModdedFirework extends ItemFirework {
     @Override
     public void setDamage(ItemStack stack, int damage) {
     	super.setDamage(stack, damage);
-//        if (stack.getItemDamage() < 1){
-//        	super.setDamage(stack, 1);
-//        }
+        if (stack.getItemDamage() < 1){
+        	super.setDamage(stack, 1);
+        }
     }
     
     @Override

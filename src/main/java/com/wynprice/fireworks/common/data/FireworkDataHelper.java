@@ -34,16 +34,24 @@ public class FireworkDataHelper {
 	}
 	
 	public static boolean isPlayerHoldingBit(EntityPlayer player, FireworkBit bit) {
+		return getAmountPlayerHoldingBit(player, bit) != 0;
+	}
+	
+	public static int getAmountPlayerHoldingBit(EntityPlayer player, FireworkBit bit) {
+		int amount = 0;
 		for(EnumHand hand : EnumHand.values()) {
 			FireworkData data = readDataFromStack(player.getHeldItem(hand));
 			FireworkItemStackHandler handler = data.getHandler();
 			for(int i = 0; i < handler.getSlots(); i++) {
 				if(bit.getPredicate().test(handler.getStackInSlot(i))) {
-					return true;
+					amount++;
 				}
 			}
+			if(amount != 0) {
+				break;
+			}
 		}
-		return false;
+		return amount;
 	}
 	
 	public static List<FireworkBit> getBits(ItemStack stack) {

@@ -6,9 +6,11 @@ import org.omg.CORBA.DoubleHolder;
 import org.omg.CORBA.FloatHolder;
 
 import com.wynprice.fireworks.common.api.FireworkBit;
+import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
 
+import io.netty.util.internal.IntegerHolder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -78,20 +80,19 @@ public class EntityFirework extends Entity {
         this.fireworkAge = 0;
         this.setSize(0.25F, 0.25F);
         this.setPosition(x, y, z);
-        int i = 1;
 
-        if (!givenItem.isEmpty() && givenItem.hasTagCompound())
-        {
+        if (!givenItem.isEmpty() && givenItem.hasTagCompound()) {
             this.dataManager.set(FIREWORK_ITEM, givenItem.copy());
-            NBTTagCompound nbttagcompound = givenItem.getTagCompound();
-            NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("Fireworks");
-            i += nbttagcompound1.getByte("Flight");
         }
 
         this.motionX = this.rand.nextGaussian() * 0.001D;
         this.motionZ = this.rand.nextGaussian() * 0.001D;
         this.motionY = 0.05D;
-        this.lifetime = 10 * i + this.rand.nextInt(6) + this.rand.nextInt(7);
+        IntegerHolder holdingAmount = new IntegerHolder();
+        FireworkDataHelper.readDataFromStack(givenItem).getHandler().getBits().stream()
+        	.filter(bit -> bit == RegistryFireworkBit.DURATION)
+        	.forEach(bit -> holdingAmount.value += this.rand.nextInt(3) + 8);
+        this.lifetime = holdingAmount.value + 10 + this.rand.nextInt(6) + this.rand.nextInt(7);
     }
 
     public EntityFirework(World world, ItemStack stack, EntityPlayer playerIn)
@@ -99,6 +100,7 @@ public class EntityFirework extends Entity {
         this(world, playerIn.posX, playerIn.posY, playerIn.posZ, stack);
         this.dataManager.set(BOOSTED_ENTITY_ID, Integer.valueOf(playerIn.getEntityId()));
         this.boostedEntity = playerIn;
+;
     }
 
     /**
@@ -213,8 +215,9 @@ public class EntityFirework extends Entity {
         }
 
         ++this.fireworkAge;
-
-        if (this.world.isRemote && this.fireworkAge % 2 < 2)
+        ItemStack stack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);
+        FireworkData data = FireworkDataHelper.readDataFromStack(stack);
+        if (this.world.isRemote && this.fireworkAge % 2 < 2 && !data.getHandler().getBits().contains(RegistryFireworkBit.NO_PARTICLES))
         {
             this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX, this.posY - 0.3D, this.posZ, this.rand.nextGaussian() * 0.05D, -this.motionY * 0.5D, this.rand.nextGaussian() * 0.05D);
         }

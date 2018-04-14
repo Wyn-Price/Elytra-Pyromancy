@@ -14,14 +14,18 @@ public class RegistryFireworkBit {
 	public static final FireworkBit SPEED = FireworkBit.MISSING;
 	public static final FireworkBit SLOW = FireworkBit.MISSING;
 	public static final FireworkBit AUTOFLIGHT = FireworkBit.MISSING;
+	public static final FireworkBit DURATION = FireworkBit.MISSING;
+	public static final FireworkBit NO_PARTICLES = FireworkBit.MISSING;
 
+	
 	@SubscribeEvent
 	public static void onRegistry(RegistryEvent.Register<FireworkBit> event) {
 		event.getRegistry().registerAll(
 				new FireworkBit(RegistryItem.SPEED_BIT, "speed").setRegistryName("speed"),
 				new FireworkBit(RegistryItem.SLOW_BIT, "slow").setRegistryName("slow"),
-				new FireworkBit(RegistryItem.AUTOFLIGHT_BIT, "autoflight").setRegistryName("autoflight")
-
+				new FireworkBit(RegistryItem.AUTOFLIGHT_BIT, "autoflight").setRegistryName("autoflight"),
+				new FireworkBit(RegistryItem.DURATION_BIT, "duration").setRegistryName("duration"),
+				new FireworkBit(RegistryItem.NO_PARTICLES_BIT, "no_particles").setRegistryName("no_particles")
 		);
 	}
 }

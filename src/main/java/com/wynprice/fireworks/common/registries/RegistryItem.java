@@ -28,7 +28,8 @@ public class RegistryItem {
 	public static final Item SPEED_BIT = Items.AIR;
 	public static final Item SLOW_BIT = Items.AIR;
 	public static final Item AUTOFLIGHT_BIT = Items.AIR;
-
+	public static final Item DURATION_BIT = Items.AIR;
+	public static final Item NO_PARTICLES_BIT = Items.AIR;
 	
 	@SubscribeEvent
 	public static void onItemRegistry(RegistryEvent.Register<Item> event) {
@@ -36,7 +37,10 @@ public class RegistryItem {
 		registerItems(event.getRegistry(), 
 				new Item().setRegistryName("speed_bit").setUnlocalizedName("speed_bit"),
 				new Item().setRegistryName("slow_bit").setUnlocalizedName("slow_bit"),
-				new Item().setRegistryName("autoflight_bit").setUnlocalizedName("autoflight_bit")
+				new Item().setRegistryName("autoflight_bit").setUnlocalizedName("autoflight_bit"),
+				new Item().setRegistryName("duration_bit").setUnlocalizedName("duration_bit"),
+				new Item().setRegistryName("no_particles_bit").setUnlocalizedName("no_particles_bit")
+
 		);
 	}
 
