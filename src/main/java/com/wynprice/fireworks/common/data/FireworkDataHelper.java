@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 
 public class FireworkDataHelper {
 	public static FireworkData readDataFromStack(ItemStack stack) {
@@ -27,8 +28,9 @@ public class FireworkDataHelper {
 		stack.setTagCompound(tag);
 	}
 	
-	public static double getXpNeededForLevel(double level) {
-		return (25D + (level / 1.73D) * (level / 1.73D)) * 100D;
+	public static double getDistanceNeededForLevelUp(int currentLevel) {
+		currentLevel--;
+		return Math.round((25D + (currentLevel / 1.73D) * (currentLevel / 1.73D)) * 10000D) / 100D;
 	}
 	
 	public static boolean isPlayerHoldingBit(EntityPlayer player, FireworkBit bit) {
@@ -42,5 +44,15 @@ public class FireworkDataHelper {
 			}
 		}
 		return false;
+	}
+	
+	public static List<FireworkBit> getBits(ItemStack stack) {
+		List<FireworkBit> bits = Lists.newArrayList();
+		for(FireworkBit bit : ElytraRegistery.getRegistry().getValuesCollection()) {
+			if(bit.getPredicate().test(stack)) {
+				bits.add(bit);
+			}
+		}
+		return bits;
 	}
 }

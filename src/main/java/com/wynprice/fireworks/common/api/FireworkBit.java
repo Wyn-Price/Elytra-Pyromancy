@@ -1,12 +1,16 @@
 package com.wynprice.fireworks.common.api;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.ElytraPyromancy;
 
+import akka.util.Collections;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
@@ -22,7 +26,6 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	public static final ResourceLocation RESOURCELOCATION = new ResourceLocation(ElytraPyromancy.MODID, "fireworkbits");
 	public static final FireworkBit MISSING = new FireworkBit(stack -> false, "missing").setRegistryName(new ResourceLocation(ElytraPyromancy.MODID, "missing"));
 
-	
 	private final String name;
 	private final Predicate<ItemStack> predicate;
 	
@@ -39,8 +42,9 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void setBakedQuadSupplier(Supplier<List<BakedQuad>> bakedQuadSupplier) {
+	public FireworkBit setBakedQuadSupplier(Supplier<List<BakedQuad>> bakedQuadSupplier) {
 		this.bakedQuadSupplier = bakedQuadSupplier;
+		return this;
 	}
 	
 	public Predicate<ItemStack> getPredicate() {
@@ -62,5 +66,5 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	
 	public String getDescription() {
 		return I18n.format(getDescriptionKey());
-	}	
+	}
 }

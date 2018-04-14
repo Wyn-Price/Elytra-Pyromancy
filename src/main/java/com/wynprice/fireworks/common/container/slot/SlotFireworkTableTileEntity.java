@@ -10,6 +10,7 @@ import com.wynprice.fireworks.common.tileentities.TileEntityFireworkTable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -31,31 +32,17 @@ public class SlotFireworkTableTileEntity extends SlotItemHandler {
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() == RegistryItem.FIREWORK;
+		return stack.getItem() == Items.FIREWORKS;
 	}
 	
 	@Override
 	public int getSlotStackLimit() {
 		return 1;
 	}
-
-	@Override
-	public boolean canTakeStack(EntityPlayer playerIn) {
-		if(super.canTakeStack(playerIn)) {
-			ItemStack stack = getStack();
-			FireworkData data = FireworkDataHelper.readDataFromStack(stack);
-			for(int i = 37; i < container.inventorySlots.size(); i++) {
-				data.getHandler().setStackInSlot(i - 37, container.inventorySlots.get(i).getStack());
-			}
-			FireworkDataHelper.writeDataToStack(data, stack);
-			return true;
-		}
-		return false;
-	}
 	
 	@Override
 	public void onSlotChanged() {
-		container.onSLot0Changed();
+		container.onSlot0Changed();
 		super.onSlotChanged();
 	}
 	

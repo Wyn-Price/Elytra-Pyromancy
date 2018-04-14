@@ -1,22 +1,15 @@
 package com.wynprice.fireworks.common.data;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Lists;
-
-import io.netty.util.internal.IntegerHolder;
+import lombok.Data;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.ItemStackHandler;
 
+@Data
 public class FireworkData implements INBTSerializable<NBTTagCompound> {
-
+	
 	private int modifiers;
 	private int timesBroken;
 	private int totalUse;
@@ -26,52 +19,9 @@ public class FireworkData implements INBTSerializable<NBTTagCompound> {
 	
 	FireworkItemStackHandler handler = new FireworkItemStackHandler();
 	
-	public FireworkData setModifiers(int modifiers) {
-		this.modifiers = modifiers;
-		return this;
-	}
-	
-	public FireworkData setTimesBroken(int timesBroken) {
-		this.timesBroken = timesBroken;
-		return this;
-	}
-	
-	public FireworkData setTotalUse(int totalUse) {
-		this.totalUse = totalUse;
-		return this;
-	}
-	
-	public int getModifiers() {
-		return modifiers;
-	}
-	
-	public int getTimesBroken() {
-		return timesBroken;
-	}
-	
-	public int getTotalUse() {
-		return totalUse;
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
-	public double getDistance() {
-		return distance;
-	}
-	
-	public double getTotalDistance() {
-		return totalDistance;
-	}
-	
-	public FireworkItemStackHandler getHandler() {
-		return handler;
-	}
-	
 	public void moveDistance(EntityPlayer player, double distance) {
 		this.distance += distance;
-		if(this.distance >= FireworkDataHelper.getXpNeededForLevel(distance)) {
+		if(this.distance >= FireworkDataHelper.getDistanceNeededForLevelUp(level)) {
 			levelUp(player);
 		}
 	}
@@ -81,7 +31,7 @@ public class FireworkData implements INBTSerializable<NBTTagCompound> {
 			return;
 		}
 		this.level += 1;
-		player.sendStatusMessage(new TextComponentTranslation("messages.firework.levelup", this.level), true);
+		player.sendStatusMessage(new TextComponentTranslation("messages.firework.levelup", this.level), false);
 		this.distance = 0;
 		modifiers++;
 	}
@@ -105,7 +55,7 @@ public class FireworkData implements INBTSerializable<NBTTagCompound> {
 		timesBroken = nbt.getInteger("times_broken");
 		totalUse = nbt.getInteger("total_used");
 		distance = nbt.getDouble("distance");
-		level = Math.min(nbt.getInteger("level"), 15);
+		level = MathHelper.clamp(nbt.getInteger("level"), 1, 15);
 		totalDistance = nbt.getDouble("total_distance");
 		handler.deserializeNBT(nbt.getCompoundTag("modules"));
 		if(handler.getSlots() != modifiers) {

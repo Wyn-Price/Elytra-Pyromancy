@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.common.container.slot.SlotFireworkTableTileEntity;
 import com.wynprice.fireworks.common.container.slot.SlotPredicate;
+import com.wynprice.fireworks.common.container.slot.SlotPredicateTableTileEntity;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.data.FireworkItemStackHandler;
@@ -41,10 +42,21 @@ public class ContainerFireworkTable extends Container {
             this.addSlotToContainer(new Slot(player.inventory, i1, 8 + i1 * 18, 161));
         }
         
-        onSLot0Changed();
+        onSlot0Changed();
 	}
 	
-	public void onSLot0Changed() {
+	public void onSlotAdditionsChanged() {
+		Slot slot = getSlot(0);
+		ItemStack stack = slot.getStack();
+		FireworkData data = FireworkDataHelper.readDataFromStack(stack);
+		for(int i = 37; i < inventorySlots.size(); i++) {
+			data.getHandler().setStackInSlot(i - 37, inventorySlots.get(i).getStack());
+		}
+		FireworkDataHelper.writeDataToStack(data, stack);
+		slot.putStack(stack);
+	}
+	
+	public void onSlot0Changed() {
 		FireworkData data = FireworkDataHelper.readDataFromStack(getSlot(0).getStack());
 		if(this.getSlot(0).getHasStack()) {
 			if(this.inventorySlots.size() != data.getModifiers() + 37) {
@@ -54,12 +66,12 @@ public class ContainerFireworkTable extends Container {
 				FireworkItemStackHandler handler = data.getHandler();
 				for(int i = 0; i < Math.min(handler.getSlots(), 15); i++) {
 					Point point = rotatePointAbout(i, center, theta, 57);
-					this.addSlotToContainer(new SlotPredicate(handler.getStackInSlot(i), point.x, point.y, stack -> true/*//TODO change to only registered items*/).setStackSize(1));
+					this.addSlotToContainer(new SlotPredicateTableTileEntity(this, handler.getStackInSlot(i), point.x, point.y, stack -> true/*//TODO change to only registered items*/).setStackSize(1));
 				}
 				if(handler.getSlots() > 15) {
 					for(int i = 15; i < handler.getSlots(); i++) {
 						Point point = rotatePointAbout(i, center, innerTheta, 30);
-						this.addSlotToContainer(new SlotPredicate(handler.getStackInSlot(i), point.x, point.y, stack -> true/*//TODO change to only registered items*/).setStackSize(1));
+						this.addSlotToContainer(new SlotPredicateTableTileEntity(this, handler.getStackInSlot(i), point.x, point.y, stack -> true/*//TODO change to only top tier items*/).setStackSize(1));
 					}
 				}
 			}
@@ -71,7 +83,7 @@ public class ContainerFireworkTable extends Container {
 	
 	@Override
 	public void onContainerClosed(EntityPlayer playerIn) {
-		this.getSlot(0).canTakeStack(playerIn);
+		onSlotAdditionsChanged();
 		super.onContainerClosed(playerIn);
 	}
 	

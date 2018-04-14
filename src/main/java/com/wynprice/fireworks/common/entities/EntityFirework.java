@@ -1,6 +1,11 @@
 package com.wynprice.fireworks.common.entities;
 
-import com.wynprice.fireworks.common.data.FireworkData;
+import java.util.List;
+
+import org.omg.CORBA.DoubleHolder;
+import org.omg.CORBA.FloatHolder;
+
+import com.wynprice.fireworks.common.api.FireworkBit;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
 
@@ -27,6 +32,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.config.GuiConfigEntries.DoubleEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -145,10 +151,17 @@ public class EntityFirework extends Entity {
                 if (this.boostedEntity.isElytraFlying())
                 {
                     Vec3d vec3d = this.boostedEntity.getLookVec();
-                    ItemStack itemstack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);//TODO: shit
-//                    FireworkData data = FireworkData.fromStack(itemstack);
-//                    double d0 = MathHelper.clamp(data.getSpeed() * 2D, 0D, 10D);
-                    double d0 = 2;
+                    ItemStack itemstack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);
+                    List<FireworkBit> bits = FireworkDataHelper.readDataFromStack(itemstack).getHandler().getBits();
+                    FloatHolder speed = new FloatHolder(2);
+                    bits.forEach(bit -> {
+                    	if(bit == RegistryFireworkBit.SPEED) {
+                    		speed.value += 0.25;//TODO: CONFIG
+                    	} else if(bit == RegistryFireworkBit.SLOW) {
+                    		speed.value -= 0.25;
+                    	}
+                    });
+                    double d0 = MathHelper.clamp(speed.value, 0D, 10D);
                     this.boostedEntity.motionX += vec3d.x * d0 - this.boostedEntity.motionX;
                     this.boostedEntity.motionY += vec3d.y * d0 - this.boostedEntity.motionY;
                     this.boostedEntity.motionZ += vec3d.z * d0 - this.boostedEntity.motionZ;

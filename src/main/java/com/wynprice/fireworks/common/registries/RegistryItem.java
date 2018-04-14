@@ -25,7 +25,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 @ObjectHolder(value=ElytraPyromancy.MODID)
 public class RegistryItem {
 	
-	public static final Item FIREWORK = Items.AIR;
 	public static final Item SPEED_BIT = Items.AIR;
 	public static final Item SLOW_BIT = Items.AIR;
 	public static final Item AUTOFLIGHT_BIT = Items.AIR;
@@ -33,14 +32,19 @@ public class RegistryItem {
 	
 	@SubscribeEvent
 	public static void onItemRegistry(RegistryEvent.Register<Item> event) {
+		event.getRegistry().registerAll(new ItemModdedFirework());
 		registerItems(event.getRegistry(), 
-				new ItemModdedFirework(), 
 				new Item().setRegistryName("speed_bit").setUnlocalizedName("speed_bit"),
 				new Item().setRegistryName("slow_bit").setUnlocalizedName("slow_bit"),
 				new Item().setRegistryName("autoflight_bit").setUnlocalizedName("autoflight_bit")
 		);
 	}
 
+	@SubscribeEvent
+	public static void onRenderEvent(ModelRegistryEvent event) {
+		registerRenderForItems(itemList.toArray(new Item[0]));
+	}
+	
 	private final static ArrayList<Item> itemList = new ArrayList<>();
 	
 	public static void registerItems(IForgeRegistry<Item> registry, Item... items) {

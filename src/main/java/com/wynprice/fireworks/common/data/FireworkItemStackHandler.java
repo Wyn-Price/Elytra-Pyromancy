@@ -3,6 +3,9 @@ package com.wynprice.fireworks.common.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.wynprice.fireworks.common.api.FireworkBit;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
@@ -23,5 +26,14 @@ public class FireworkItemStackHandler extends ItemStackHandler {
 			}
 			this.stacks = NonNullList.from(ItemStack.EMPTY, list.toArray(new ItemStack[0]));
 		}
+	}
+	
+	public List<FireworkBit> getBits() {
+		List<FireworkBit> bits = Lists.newArrayList();
+		for(int i = 0; i < getSlots(); i++) {
+			ItemStack itemstack = getStackInSlot(i);
+			bits.addAll(FireworkDataHelper.getBits(itemstack));
+		}
+		return bits;
 	}
 }

@@ -32,6 +32,8 @@ public class BlockFireworkTable extends Block {
 		return true;
 	}
 	
+	
+	
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;

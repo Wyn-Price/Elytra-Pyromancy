@@ -4,9 +4,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.wynprice.fireworks.common.handlers.GuiHandler;
 import com.wynprice.fireworks.common.network.EPNetwork;
-import com.wynprice.fireworks.common.registries.RegistryItem;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -26,7 +26,7 @@ public class ElytraPyromancy
 
 		@Override
 		public ItemStack getTabIconItem() {
-			return new ItemStack(RegistryItem.FIREWORK);
+			return new ItemStack(Items.FIREWORKS);
 		}
     	
     };

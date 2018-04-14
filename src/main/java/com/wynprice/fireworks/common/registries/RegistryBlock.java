@@ -37,21 +37,10 @@ public class RegistryBlock {
 		);
 	}
 	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public static void onModelRegister(ModelRegistryEvent event) {
-		RegistryItem.registerRenderForItems(items.toArray(new Item[0]));
-	}
-	
-	
-	
-	private static ArrayList<Item> items = new ArrayList<>();
-	
 	private static Item createItemBlock(Block block, int stacksize) {
 		ItemBlock item = new ItemBlock(block);
 		item.setMaxStackSize(stacksize);
 		item.setRegistryName(block.getRegistryName());
-		items.add(item);
 		return item;
 	}
 }
