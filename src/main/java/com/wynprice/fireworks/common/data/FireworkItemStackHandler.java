@@ -3,6 +3,8 @@ package com.wynprice.fireworks.common.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.common.api.FireworkBit;
 
@@ -35,5 +37,14 @@ public class FireworkItemStackHandler extends ItemStackHandler {
 			bits.addAll(FireworkDataHelper.getBits(itemstack));
 		}
 		return bits;
+	}
+	
+	public List<Pair<ItemStack, List<FireworkBit>>> getMappedBits() {
+		List<Pair<ItemStack, List<FireworkBit>>> list = Lists.newArrayList();
+		for(int i = 0; i < getSlots(); i++) {
+			ItemStack itemstack = getStackInSlot(i);
+			list.add(Pair.of(itemstack, FireworkDataHelper.getBits(itemstack)));
+		}
+		return list;
 	}
 }

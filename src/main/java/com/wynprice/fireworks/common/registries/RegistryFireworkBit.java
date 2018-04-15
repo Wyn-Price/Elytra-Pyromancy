@@ -16,6 +16,7 @@ public class RegistryFireworkBit {
 	public static final FireworkBit AUTOFLIGHT = FireworkBit.MISSING;
 	public static final FireworkBit DURATION = FireworkBit.MISSING;
 	public static final FireworkBit NO_PARTICLES = FireworkBit.MISSING;
+	public static final FireworkBit PARTICLE_COLOR = FireworkBit.MISSING;
 
 	
 	@SubscribeEvent
@@ -25,7 +26,8 @@ public class RegistryFireworkBit {
 				new FireworkBit(RegistryItem.SLOW_BIT, "slow").setRegistryName("slow"),
 				new FireworkBit(RegistryItem.AUTOFLIGHT_BIT, "autoflight").setRegistryName("autoflight"),
 				new FireworkBit(RegistryItem.DURATION_BIT, "duration").setRegistryName("duration"),
-				new FireworkBit(RegistryItem.NO_PARTICLES_BIT, "no_particles").setRegistryName("no_particles")
+				new FireworkBit(RegistryItem.NO_PARTICLES_BIT, "no_particles").setRegistryName("no_particles"),
+				new FireworkBit(RegistryItem.PARTICLE_COLOR_BIT, "particle_color").setRegistryName("particle_color")
 		);
 	}
 }

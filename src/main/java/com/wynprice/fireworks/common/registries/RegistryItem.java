@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.common.items.ItemColorBit;
 import com.wynprice.fireworks.common.items.ItemModdedFirework;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -30,6 +31,8 @@ public class RegistryItem {
 	public static final Item AUTOFLIGHT_BIT = Items.AIR;
 	public static final Item DURATION_BIT = Items.AIR;
 	public static final Item NO_PARTICLES_BIT = Items.AIR;
+	public static final Item PARTICLE_COLOR_BIT = Items.AIR;
+
 	
 	@SubscribeEvent
 	public static void onItemRegistry(RegistryEvent.Register<Item> event) {
@@ -39,8 +42,8 @@ public class RegistryItem {
 				new Item().setRegistryName("slow_bit").setUnlocalizedName("slow_bit"),
 				new Item().setRegistryName("autoflight_bit").setUnlocalizedName("autoflight_bit"),
 				new Item().setRegistryName("duration_bit").setUnlocalizedName("duration_bit"),
-				new Item().setRegistryName("no_particles_bit").setUnlocalizedName("no_particles_bit")
-
+				new Item().setRegistryName("no_particles_bit").setUnlocalizedName("no_particles_bit"),
+				new ItemColorBit().setRegistryName("particle_color_bit").setUnlocalizedName("particle_color_bit")
 		);
 	}
 

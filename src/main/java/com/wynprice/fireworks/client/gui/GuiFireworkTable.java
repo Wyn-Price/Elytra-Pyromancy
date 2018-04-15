@@ -43,7 +43,7 @@ public class GuiFireworkTable extends GuiContainer {
 			}
         	this.drawTexturedModalRect(this.guiLeft + slot.xPos - 1, this.guiTop + slot.yPos - 1, 7, 17, 18, 18);
         	if(id == 0 && !slot.getHasStack()) {
-				manager.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/wigits/firework_slot_background.png"));
+				manager.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/gui/wigits/firework_slot_background.png"));
 				this.drawModalRectWithCustomSizedTexture(this.guiLeft + slot.xPos, this.guiTop + slot.yPos, 0, 0, 16, 16, 16, 16);
 				manager.bindTexture(slotLocation);
 			}

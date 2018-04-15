@@ -1,16 +1,23 @@
 package com.wynprice.fireworks.common.entities;
 
+import java.awt.Color;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.omg.CORBA.DoubleHolder;
 import org.omg.CORBA.FloatHolder;
 
+import com.google.common.collect.Lists;
 import com.wynprice.fireworks.common.api.FireworkBit;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
+import com.wynprice.fireworks.common.util.ColorConfig;
 
 import io.netty.util.internal.IntegerHolder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -217,9 +224,20 @@ public class EntityFirework extends Entity {
         ++this.fireworkAge;
         ItemStack stack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);
         FireworkData data = FireworkDataHelper.readDataFromStack(stack);
-        if (this.world.isRemote && this.fireworkAge % 2 < 2 && !data.getHandler().getBits().contains(RegistryFireworkBit.NO_PARTICLES))
-        {
-            this.world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, this.posX, this.posY - 0.3D, this.posZ, this.rand.nextGaussian() * 0.05D, -this.motionY * 0.5D, this.rand.nextGaussian() * 0.05D);
+        if (this.world.isRemote && this.fireworkAge % 2 < 2 && !data.getHandler().getBits().contains(RegistryFireworkBit.NO_PARTICLES)) {
+        	ParticleFirework.Spark particle = new ParticleFirework.Spark(this.world, this.posX, this.posY - 0.3D, this.posZ, this.rand.nextGaussian() * 0.05D, -this.motionY * 0.5D, this.rand.nextGaussian() * 0.05D, Minecraft.getMinecraft().effectRenderer);
+        	List<ColorConfig> colors = Lists.newArrayList();
+        	for(Pair<ItemStack, List<FireworkBit>> entry: FireworkDataHelper.readDataFromStack(this.dataManager.get(FIREWORK_ITEM)).getHandler().getMappedBits()) {
+        		if(entry.getValue().contains(RegistryFireworkBit.PARTICLE_COLOR)) {
+        			colors.add(ColorConfig.fromItemStack(entry.getKey()));
+        		}
+        	}
+        	if(!colors.isEmpty()) {
+	        	ColorConfig colorConfig = colors.get(this.rand.nextInt(colors.size()));
+	        	particle.setColor(colorConfig.getStart().getColor());
+	        	particle.setColorFade(colorConfig.getEnd().getColor());
+        	}
+        	Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
 
         if (!this.world.isRemote && this.fireworkAge > this.lifetime)
@@ -284,9 +302,7 @@ public class EntityFirework extends Entity {
         return ((Integer)this.dataManager.get(BOOSTED_ENTITY_ID)).intValue() > 0;
     }
 
-    /**
-     * Handler for {@link World#setEntityState}
-     */
+    
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -296,7 +312,6 @@ public class EntityFirework extends Entity {
             NBTTagCompound nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
             this.world.makeFireworks(this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ, nbttagcompound);
         }
-
         super.handleStatusUpdate(id);
     }
 
