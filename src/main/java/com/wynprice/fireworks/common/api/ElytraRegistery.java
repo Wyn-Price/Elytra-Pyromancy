@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistry.ClearCallback;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid=ElytraPyromancy.MODID)
@@ -33,12 +32,7 @@ public class ElytraRegistery {
 	 		.set((key, isNetwork) -> FireworkBit.MISSING)
 	 		.create();
 	}
- 
 	
-    private static ClearCallback<FireworkBit> createClearCallback(ClearCallback<FireworkBit> callback) {
-    	return callback;
-    }
-    
     public static IForgeRegistry<FireworkBit> getRegistry() {
 		return REGISTRY;
 	}
