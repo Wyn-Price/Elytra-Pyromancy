@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 @EventBusSubscriber(modid=ElytraPyromancy.MODID, value=Side.CLIENT)
-public class ModelHandler {
+public class HandlerFireworkModel {
 		
 	@SubscribeEvent
 	public static void onModelsLoaded(ModelBakeEvent event) {

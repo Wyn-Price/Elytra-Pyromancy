@@ -1,19 +1,15 @@
 package com.wynprice.fireworks.common.items;
 
+import java.util.List;
+
 import com.wynprice.fireworks.ElytraPyromancy;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.entities.EntityFirework;
 import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
-import com.wynprice.fireworks.common.registries.RegistryItem;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.entity.item.EntityFireworkRocket;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +20,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 public class ItemModdedFirework extends ItemFirework {
 	
@@ -37,7 +32,7 @@ public class ItemModdedFirework extends ItemFirework {
 	
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack itemstack = player.getHeldItem(hand);
+	        ItemStack itemstack = player.getHeldItem(hand);
     	if (!worldIn.isRemote && isUsable(itemstack)) {
             EntityFirework entityfireworkrocket = new EntityFirework(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), itemstack);
             worldIn.spawnEntity(entityfireworkrocket);
@@ -58,14 +53,14 @@ public class ItemModdedFirework extends ItemFirework {
     @Override
     public int getMaxDamage(ItemStack stack) {
     	FireworkData data = FireworkDataHelper.readDataFromStack(stack);
-    	return (data.getLevel() + 1) * 100;
+    	return (data.getLevel() + 1) * 10;
     }
     
     @Override
     public void setDamage(ItemStack stack, int damage) {
     	super.setDamage(stack, damage);
-        if (stack.getItemDamage() < 1){
-        	super.setDamage(stack, 1);
+        if (stack.getItemDamage() > this.getMaxDamage(stack)){
+        	super.setDamage(stack, this.getMaxDamage(stack));
         }
     }
     
@@ -73,6 +68,8 @@ public class ItemModdedFirework extends ItemFirework {
     public boolean isDamageable() {
     	return true;
     }
+    
+    
     
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -98,6 +95,12 @@ public class ItemModdedFirework extends ItemFirework {
 	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     	}
         return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
-
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    	super.addInformation(stack, worldIn, tooltip, flagIn);
+    	FireworkData data = FireworkDataHelper.readDataFromStack(stack);
+    	tooltip.add("Distance: " + String.valueOf(Math.round(data.getDistance() * 100D) / 100D) + "m / " + FireworkDataHelper.getDistanceNeededForLevelUp(data.getLevel()) + "m");
     }
 }

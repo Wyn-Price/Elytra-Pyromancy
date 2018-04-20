@@ -52,6 +52,7 @@ public class FireworkData implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
 		modifiers = MathHelper.clamp(nbt.getInteger("modifiers"), 1, 17);
+		modifiers = 15;
 		timesBroken = nbt.getInteger("times_broken");
 		totalUse = nbt.getInteger("total_used");
 		distance = nbt.getDouble("distance");

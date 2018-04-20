@@ -2,6 +2,7 @@ package com.wynprice.fireworks.common.api;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -26,11 +27,13 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	public static final ResourceLocation RESOURCELOCATION = new ResourceLocation(ElytraPyromancy.MODID, "fireworkbits");
 	public static final FireworkBit MISSING = new FireworkBit(stack -> false, "missing").setRegistryName(new ResourceLocation(ElytraPyromancy.MODID, "missing"));
 
-	private final String name;
-	private final Predicate<ItemStack> predicate;
+	protected final String name;
+	protected final Predicate<ItemStack> predicate;
 	
 	@SideOnly(Side.CLIENT)
-	private Supplier<List<BakedQuad>> bakedQuadSupplier;
+	protected List<BakedQuad> bakedQuads = Lists.newArrayList();
+	@SideOnly(Side.CLIENT)
+	protected BiFunction<ItemStack, Integer, Integer> tintColorFunction = (itemstack, tint) -> -1;
 	
 	public FireworkBit(Predicate<ItemStack> predicate, String name) {
 		this.predicate = predicate;
@@ -42,8 +45,14 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public FireworkBit setBakedQuadSupplier(Supplier<List<BakedQuad>> bakedQuadSupplier) {
-		this.bakedQuadSupplier = bakedQuadSupplier;
+	public FireworkBit setBakedQuads(List<BakedQuad> bakedQuads) {
+		this.bakedQuads = bakedQuads;
+		return this;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public FireworkBit setTintColorFunction(BiFunction<ItemStack, Integer, Integer> tintColorFunction) {
+		this.tintColorFunction = tintColorFunction;
 		return this;
 	}
 	
@@ -53,8 +62,13 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	
 	@SideOnly(Side.CLIENT)
 	public List<BakedQuad> getQuads() {
-		return bakedQuadSupplier == null ? Lists.newArrayList() : bakedQuadSupplier.get();
+		return bakedQuads;
 	};
+	
+	@SideOnly(Side.CLIENT)
+	public int getTintColor(ItemStack stack, int tintIndex) {
+		return tintColorFunction.apply(stack, tintIndex);
+	}
 	
 	public String getName() {
 		return name;

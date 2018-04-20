@@ -1,4 +1,4 @@
-package com.wynprice.fireworks.client.rendering;
+package com.wynprice.fireworks.client.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,7 +36,7 @@ public class HandlerFireworkBitModel {
 				return;
 			}
 			List<BakedQuad> quadList = model.getQuads(null, null, 0);
-			bit.setBakedQuadSupplier(() -> quadList);
+			bit.setBakedQuads(quadList);
 		});
 	}
 		

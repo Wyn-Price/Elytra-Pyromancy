@@ -16,7 +16,7 @@ public class ColorConfig {
 		
 		public SingleConfig(NBTTagCompound nbt) {
 			this.nbtTagCompound = nbt;
-			color = nbt.hasKey("color", 99) ? nbt.getInteger("color") : 0xFFFFFF;
+			color = nbt.hasKey("color", 99) ? nbt.getInteger("color") : 0xFFFFFFFF;
 			point = new Point(nbt.getInteger("pointX"), nbt.getInteger("pointY"));
 			lightnessBar = nbt.hasKey("lightness_bar", 99) ? nbt.getFloat("lightness_bar") : 1f;
 		}
@@ -38,5 +38,10 @@ public class ColorConfig {
 	public static ColorConfig fromItemStack(ItemStack key) {
 		NBTTagCompound nbt = key.getOrCreateSubCompound("color_configs");
 		return new ColorConfig(new SingleConfig(NBTUtils.getCompoundTag(nbt, "start")), new SingleConfig(NBTUtils.getCompoundTag(nbt, "end")));
+	}
+
+	public void write() {
+		this.start.write();
+		this.end.write();
 	}
 }

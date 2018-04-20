@@ -1,10 +1,14 @@
 package com.wynprice.fireworks.common.network;
 
 import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.common.network.packets.MessagePacketUpdateColorBit;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -14,12 +18,18 @@ public class EPNetwork {
 	
 	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ElytraPyromancy.MODID);
 
-	public static void preInit() {
-	}
+    private static int id = 1;
 	
-	private static int idCount = -1;
-    public static void registerMessage(Class claz, Side recievingSide) {
-    	INSTANCE.registerMessage(claz, claz, idCount++, recievingSide);
+	public static void preInit() {
+		registerMessage(MessagePacketUpdateColorBit.class, Side.SERVER);
+	}
+    
+    private static void registerMessage(Class<? extends MessageBase> message, Side recievingSide) {
+        INSTANCE.registerMessage((m, ctx) -> {
+            IThreadListener thread = FMLCommonHandler.instance().getWorldThread(ctx.netHandler);
+            thread.addScheduledTask(() -> m.process(ctx, ctx.side == Side.SERVER ? ctx.getServerHandler().player : FMLClientHandler.instance().getClientPlayerEntity()));
+            return null;
+        }, message, id++, recievingSide);
     }
     
 	public static void sendToServer(IMessage message) {

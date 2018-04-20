@@ -1,1 +1,4 @@
 messages.firework.levelup=Firework leveled up to level %s
+
+gui.colors.start=Start Color
+gui.colors.end=End Color

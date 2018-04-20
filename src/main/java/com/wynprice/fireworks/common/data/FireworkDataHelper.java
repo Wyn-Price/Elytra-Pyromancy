@@ -2,17 +2,23 @@ package com.wynprice.fireworks.common.data;
 
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.common.api.ElytraRegistery;
 import com.wynprice.fireworks.common.api.FireworkBit;
+import com.wynprice.fireworks.common.util.MathReader;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.MathHelper;
 
 public class FireworkDataHelper {
+	public static final String EXPRESION = "((25 + (x / 1.73)^2) * 100000) / 100";
+	
 	public static FireworkData readDataFromStack(ItemStack stack) {
 		FireworkData data = new FireworkData();
 		data.deserializeNBT(stack.getOrCreateSubCompound("fireworkdata"));
@@ -30,7 +36,7 @@ public class FireworkDataHelper {
 	
 	public static double getDistanceNeededForLevelUp(int currentLevel) {
 		currentLevel--;
-		return Math.round((25D + (currentLevel / 1.73D) * (currentLevel / 1.73D)) * 10000D) / 100D;
+		return MathReader.eval(EXPRESION.replace("x", String.valueOf(currentLevel)));
 	}
 	
 	public static boolean isPlayerHoldingBit(EntityPlayer player, FireworkBit bit) {
