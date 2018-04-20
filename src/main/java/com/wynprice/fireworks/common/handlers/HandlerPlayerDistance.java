@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.collect.Maps;
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.items.ItemModdedFirework;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID)
+@EventBusSubscriber(modid=FireworksMod.MODID)
 public class HandlerPlayerDistance {
 	private static Map<UUID, Vec3d> previousMap = Maps.newHashMap();
 	@SubscribeEvent

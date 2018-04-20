@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.Lists;
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 
 import akka.util.Collections;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,8 +24,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 		
-	public static final ResourceLocation RESOURCELOCATION = new ResourceLocation(ElytraPyromancy.MODID, "fireworkbits");
-	public static final FireworkBit MISSING = new FireworkBit(stack -> false, "missing").setRegistryName(new ResourceLocation(ElytraPyromancy.MODID, "missing"));
+	public static final ResourceLocation RESOURCELOCATION = new ResourceLocation(FireworksMod.MODID, "fireworkbits");
+	public static final FireworkBit MISSING = new FireworkBit(stack -> false, "missing").setRegistryName(new ResourceLocation(FireworksMod.MODID, "missing"));
 
 	protected final String name;
 	protected final Predicate<ItemStack> predicate;

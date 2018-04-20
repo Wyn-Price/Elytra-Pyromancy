@@ -5,8 +5,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-import com.wynprice.fireworks.ElytraPyromancy;
-import com.wynprice.fireworks.common.api.ElytraRegistery;
+import com.wynprice.fireworks.FireworksMod;
+import com.wynprice.fireworks.common.api.FireworksModRegistery;
 import com.wynprice.fireworks.common.util.NonIndentedPrintStream;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -21,12 +21,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID, value=Side.CLIENT)
+@EventBusSubscriber(modid=FireworksMod.MODID, value=Side.CLIENT)
 @SideOnly(Side.CLIENT)
 public class HandlerFireworkBitModel {
 	@SubscribeEvent
 	public static void onModelBaked(TextureStitchEvent event) {
-		ElytraRegistery.getRegistry().forEach(bit -> {
+		FireworksModRegistery.getRegistry().forEach(bit -> {
 			ResourceLocation loc = bit.getRegistryName();
 			IBakedModel model;
 			try {

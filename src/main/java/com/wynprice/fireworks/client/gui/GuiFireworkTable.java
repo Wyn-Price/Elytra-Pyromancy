@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.client.gui;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.container.ContainerFireworkTable;
 import com.wynprice.fireworks.common.tileentities.TileEntityFireworkTable;
 
@@ -43,7 +43,7 @@ public class GuiFireworkTable extends GuiContainer {
 			}
         	this.drawTexturedModalRect(this.guiLeft + slot.xPos - 1, this.guiTop + slot.yPos - 1, 7, 17, 18, 18);
         	if(id == 0 && !slot.getHasStack()) {
-				manager.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/gui/widgits/firework_slot_background.png"));
+				manager.bindTexture(new ResourceLocation(FireworksMod.MODID, "textures/gui/widgits/firework_slot_background.png"));
 				this.drawModalRectWithCustomSizedTexture(this.guiLeft + slot.xPos, this.guiTop + slot.yPos, 0, 0, 16, 16, 16, 16);
 				manager.bindTexture(slotLocation);
 			}

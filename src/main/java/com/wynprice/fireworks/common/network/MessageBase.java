@@ -2,7 +2,7 @@ package com.wynprice.fireworks.common.network;
 
 import java.io.IOException;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public abstract class MessageBase implements IMessage {
         try {
             deserialize(new PacketBuffer(buffer));
         } catch (IOException err) {
-            ElytraPyromancy.getLogger().catching(err);
+            FireworksMod.getLogger().catching(err);
         }
     }
 

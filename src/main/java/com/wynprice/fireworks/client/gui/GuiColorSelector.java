@@ -13,8 +13,8 @@ import org.lwjgl.input.Mouse;
 import org.omg.CORBA.BooleanHolder;
 
 import com.google.common.collect.Lists;
-import com.wynprice.fireworks.ElytraPyromancy;
-import com.wynprice.fireworks.common.network.EPNetwork;
+import com.wynprice.fireworks.FireworksMod;
+import com.wynprice.fireworks.common.network.FireworksNetwork;
 import com.wynprice.fireworks.common.network.packets.MessagePacketUpdateColorBit;
 import com.wynprice.fireworks.common.util.ColorConfig;
 
@@ -109,7 +109,7 @@ public class GuiColorSelector extends GuiScreen {
      		
      		int colorPre = getColorUnderMouse();
      		
-     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/gui/widgits/color_wheel.png"));
+     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(FireworksMod.MODID, "textures/gui/widgits/color_wheel.png"));
      		this.drawModalRectWithCustomSizedTexture(this.width / 2 - 64, this.height / 2 - 64, 0, 0, 128, 128, 128, 128);
 
      		int newColor = getColorUnderMouse();
@@ -135,10 +135,10 @@ public class GuiColorSelector extends GuiScreen {
      		float[] hsbs = Color.RGBtoHSB((currentSelected.value >> 16) & 0xFF, (currentSelected.value >> 8) & 0xFF, currentSelected.value & 0xFF, null);
      		currentSelected.value = Color.HSBtoRGB(hsbs[0], hsbs[1], barAmount);
      		
-     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/gui/widgits/color_wheel_border.png"));
+     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(FireworksMod.MODID, "textures/gui/widgits/color_wheel_border.png"));
      		this.drawModalRectWithCustomSizedTexture(this.width / 2 - 65, this.height / 2 - 65, 0, 0, 130, 130, 130, 130);
      		
-     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(ElytraPyromancy.MODID, "textures/gui/widgits/color_wheel_cursor.png"));
+     		Minecraft.getMinecraft().getRenderManager().renderEngine.bindTexture(new ResourceLocation(FireworksMod.MODID, "textures/gui/widgits/color_wheel_cursor.png"));
      		this.drawModalRectWithCustomSizedTexture(currentColorWheel.x * new ScaledResolution(this.mc).getScaledWidth() / this.mc.displayWidth - 4, 
      				new ScaledResolution(this.mc).getScaledHeight() - currentColorWheel.y * new ScaledResolution(this.mc).getScaledHeight() / this.mc.displayHeight - 1 - 4, 0, 0, 8, 8, 8, 8);
      		
@@ -257,7 +257,7 @@ public class GuiColorSelector extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		this.config.write();
-		EPNetwork.sendToServer(new MessagePacketUpdateColorBit(this.stack.getOrCreateSubCompound("color_configs"), this.hand));
+		FireworksNetwork.sendToServer(new MessagePacketUpdateColorBit(this.stack.getOrCreateSubCompound("color_configs"), this.hand));
 		super.onGuiClosed();
 	}
 	

@@ -3,7 +3,7 @@ package com.wynprice.fireworks.common.registries;
 import java.util.ArrayList;
 
 import com.google.common.collect.Lists;
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.items.ItemColorBit;
 import com.wynprice.fireworks.common.items.ItemModdedFirework;
 
@@ -22,8 +22,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID)
-@ObjectHolder(value=ElytraPyromancy.MODID)
+@EventBusSubscriber(modid=FireworksMod.MODID)
+@ObjectHolder(value=FireworksMod.MODID)
 public class RegistryItem {
 	
 	public static final Item SPEED_BIT = Items.AIR;
@@ -58,9 +58,9 @@ public class RegistryItem {
 		itemList.addAll(Lists.newArrayList(items));
 		for(Item item : items) {
 			if(item instanceof ItemBlock) {
-				((ItemBlock)item).getBlock().setCreativeTab(ElytraPyromancy.TAB);
+				((ItemBlock)item).getBlock().setCreativeTab(FireworksMod.TAB);
 			}
-			item.setCreativeTab(ElytraPyromancy.TAB);
+			item.setCreativeTab(FireworksMod.TAB);
 		}
 		registry.registerAll(items);
 	}

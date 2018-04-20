@@ -3,7 +3,7 @@ package com.wynprice.fireworks;
 import org.apache.logging.log4j.Logger;
 
 import com.wynprice.fireworks.common.handlers.GuiHandler;
-import com.wynprice.fireworks.common.network.EPNetwork;
+import com.wynprice.fireworks.common.network.FireworksNetwork;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -15,8 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid = ElytraPyromancy.MODID, name = ElytraPyromancy.NAME, version = ElytraPyromancy.VERSION)
-public class ElytraPyromancy
+@Mod(modid = FireworksMod.MODID, name = FireworksMod.NAME, version = FireworksMod.VERSION)
+public class FireworksMod
 {
     public static final String MODID = "elytrapyromancy";
     public static final String NAME = "Elytra Pyromancy";
@@ -32,25 +32,25 @@ public class ElytraPyromancy
     };
     
     @Instance(MODID)
-    private static ElytraPyromancy instance;
+    private static FireworksMod instance;
     private static Logger logger;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        EPNetwork.preInit();
+        FireworksNetwork.preInit();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-    	NetworkRegistry.INSTANCE.registerGuiHandler(ElytraPyromancy.instance, new GuiHandler());
+    	NetworkRegistry.INSTANCE.registerGuiHandler(FireworksMod.instance, new GuiHandler());
     }
     
     public static Logger getLogger() {
 		return logger;
 	}
     
-    public static ElytraPyromancy getInstance() {
+    public static FireworksMod getInstance() {
 		return instance;
 	}
 }

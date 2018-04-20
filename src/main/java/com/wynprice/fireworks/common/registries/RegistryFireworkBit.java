@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.common.registries;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.api.FireworkBit;
 
 import net.minecraftforge.event.RegistryEvent;
@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID)
-@ObjectHolder(ElytraPyromancy.MODID)
+@EventBusSubscriber(modid=FireworksMod.MODID)
+@ObjectHolder(FireworksMod.MODID)
 public class RegistryFireworkBit {
 	public static final FireworkBit SPEED = FireworkBit.MISSING;
 	public static final FireworkBit SLOW = FireworkBit.MISSING;

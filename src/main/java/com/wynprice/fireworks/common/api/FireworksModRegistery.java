@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Maps;
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID)
-public class ElytraRegistery {
+@EventBusSubscriber(modid=FireworksMod.MODID)
+public class FireworksModRegistery {
 	
 	private static IForgeRegistry<FireworkBit> REGISTRY;
 

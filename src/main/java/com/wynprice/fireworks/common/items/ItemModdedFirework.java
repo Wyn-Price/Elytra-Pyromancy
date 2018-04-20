@@ -2,7 +2,7 @@ package com.wynprice.fireworks.common.items;
 
 import java.util.List;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.entities.EntityFirework;
@@ -26,7 +26,7 @@ public class ItemModdedFirework extends ItemFirework {
 	public ItemModdedFirework() {
 		setRegistryName(new ResourceLocation("minecraft", "fireworks"));
 		setUnlocalizedName("fireworks");
-		setCreativeTab(ElytraPyromancy.TAB);
+		setCreativeTab(FireworksMod.TAB);
 		setMaxStackSize(1);
 	}
 	

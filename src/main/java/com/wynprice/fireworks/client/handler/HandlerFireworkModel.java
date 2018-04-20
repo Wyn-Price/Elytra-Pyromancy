@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.client.handler;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.client.rendering.FireworkModel;
 import com.wynprice.fireworks.common.registries.RegistryItem;
 
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-@EventBusSubscriber(modid=ElytraPyromancy.MODID, value=Side.CLIENT)
+@EventBusSubscriber(modid=FireworksMod.MODID, value=Side.CLIENT)
 public class HandlerFireworkModel {
 		
 	@SubscribeEvent

@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.common.blocks;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.handlers.GuiHandler;
 import com.wynprice.fireworks.common.tileentities.TileEntityFireworkTable;
 
@@ -22,13 +22,13 @@ public class BlockFireworkTable extends Block {
 		setUnlocalizedName("firework_table");
 		setHardness(0.5f);
 		setResistance(0.5f);
-		TileEntity.register(ElytraPyromancy.MODID + "_fireworktable", TileEntityFireworkTable.class);
+		TileEntity.register(FireworksMod.MODID + "_fireworktable", TileEntityFireworkTable.class);
 	}
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		playerIn.openGui(ElytraPyromancy.getInstance(), GuiHandler.FIREWORKTABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		playerIn.openGui(FireworksMod.getInstance(), GuiHandler.FIREWORKTABLE, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 	

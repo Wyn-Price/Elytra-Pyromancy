@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.common.network;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.network.packets.MessagePacketUpdateColorBit;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class EPNetwork {
+public class FireworksNetwork {
 	
-	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ElytraPyromancy.MODID);
+	private static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(FireworksMod.MODID);
 
     private static int id = 1;
 	

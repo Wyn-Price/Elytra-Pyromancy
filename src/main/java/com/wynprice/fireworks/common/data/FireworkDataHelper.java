@@ -7,7 +7,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import com.google.common.collect.Lists;
-import com.wynprice.fireworks.common.api.ElytraRegistery;
+import com.wynprice.fireworks.common.api.FireworksModRegistery;
 import com.wynprice.fireworks.common.api.FireworkBit;
 import com.wynprice.fireworks.common.util.MathReader;
 
@@ -62,7 +62,7 @@ public class FireworkDataHelper {
 	
 	public static List<FireworkBit> getBits(ItemStack stack) {
 		List<FireworkBit> bits = Lists.newArrayList();
-		for(FireworkBit bit : ElytraRegistery.getRegistry().getValuesCollection()) {
+		for(FireworkBit bit : FireworksModRegistery.getRegistry().getValuesCollection()) {
 			if(bit.getPredicate().test(stack)) {
 				bits.add(bit);
 			}

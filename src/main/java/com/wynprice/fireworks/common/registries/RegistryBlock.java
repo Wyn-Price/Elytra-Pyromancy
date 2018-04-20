@@ -2,7 +2,7 @@ package com.wynprice.fireworks.common.registries;
 
 import java.util.ArrayList;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.blocks.BlockFireworkTable;
 
 import net.minecraft.block.Block;
@@ -17,8 +17,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID)
-@ObjectHolder(ElytraPyromancy.MODID)
+@EventBusSubscriber(modid=FireworksMod.MODID)
+@ObjectHolder(FireworksMod.MODID)
 public class RegistryBlock {
 	
 	public static final Block FIREWORK_TABLE = Blocks.AIR;

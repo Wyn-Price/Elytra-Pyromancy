@@ -1,6 +1,6 @@
 package com.wynprice.fireworks.client.handler;
 
-import com.wynprice.fireworks.ElytraPyromancy;
+import com.wynprice.fireworks.FireworksMod;
 import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.data.FireworkItemStackHandler;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(modid=ElytraPyromancy.MODID, value=Side.CLIENT)
+@EventBusSubscriber(modid=FireworksMod.MODID, value=Side.CLIENT)
 public class HandlerItemColors {
 	@SubscribeEvent
 	public static void registerItemColors(ColorHandlerEvent.Item event) {
