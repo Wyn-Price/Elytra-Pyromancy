@@ -1,17 +1,14 @@
 package com.wynprice.fireworks.client.gui;
 
-import java.util.List;
 import java.util.Random;
 
+import lombok.Data;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.particle.ParticleSimpleAnimated;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 
-public class GuiParticle {
+@Data
+public class GuiFireworkParticle {
 	
     private static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 	
@@ -41,7 +38,12 @@ public class GuiParticle {
     
     private final Random rand;
     
-    public GuiParticle() { //TODO make values dynamic
+    private int guiPosX;
+    private int guiPosY;
+    
+    public GuiFireworkParticle(int guiPosX, int guiPosY) { 
+    	this.guiPosX = guiPosX;
+    	this.guiPosY = guiPosY;
 		this.textureIdx = 160;
 		this.numAgingFrames = 8;
 		this.yAccel = -0.004F;
@@ -56,12 +58,25 @@ public class GuiParticle {
         this.particleMaxAge = (int) (35 + this.rand.nextFloat() * 10);
         this.particleAge = 0;
         
-        this.motionY = 35 + this.rand.nextFloat() * 8f;
+        this.motionY = 50 + this.rand.nextFloat() * 16f;
         this.motionX = (this.rand.nextFloat() - 0.5f) * 32f;
         
         onUpdate();
 	}
 
+    public void setColor(int color)
+    {
+        this.particleRed = ((color & 16711680) >> 16) / 255.0F;
+        this.particleGreen = ((color & 65280) >> 8) / 255.0F;
+        this.particleBlue = ((color & 255) >> 0) / 255.0F;
+    }
+    
+    public void setFadeColor(int color)
+    {
+        this.fadeTargetRed = ((color & 16711680) >> 16) / 255.0F;
+        this.fadeTargetGreen = ((color & 65280) >> 8) / 255.0F;
+        this.fadeTargetBlue = ((color & 255) >> 0) / 255.0F;
+    }
 	
 	public void onUpdate() {
 		if (this.particleAge++ >= this.particleMaxAge)
@@ -106,7 +121,9 @@ public class GuiParticle {
     }
 	
 	public void render(GuiScreen gui, float partialTicks) {
-        gui.drawModalRectWithCustomSizedTexture((int) (100 - this.posX), (int) (100 - this.posY), (float)this.particleTextureIndexX * 8, (float)this.particleTextureIndexY * 8, 8, 8, 128, 128);
+		GlStateManager.color(this.particleRed, this.particleGreen, this.particleBlue);
+		int scale = 12;
+        gui.drawModalRectWithCustomSizedTexture((int) (guiPosX / 2 - this.posX - scale / 2), (int) (guiPosY / 2 - this.posY + 75), (float)this.particleTextureIndexX * scale, (float)this.particleTextureIndexY * scale, scale, scale, 16 * scale, 16 * scale);
 	}
 	
 	public boolean isDead() {

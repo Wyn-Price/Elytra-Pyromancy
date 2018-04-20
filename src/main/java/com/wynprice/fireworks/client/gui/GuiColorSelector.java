@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
+import org.omg.CORBA.BooleanHolder;
 
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.ElytraPyromancy;
@@ -30,6 +31,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +53,7 @@ public class GuiColorSelector extends GuiScreen {
 	
 	private IntegerHolder currentSelected = null;
 	
-	private final List<GuiParticle> renderParticles = Lists.newArrayList();
+	private final List<GuiFireworkParticle> renderParticles = Lists.newArrayList();
 	
 	public GuiColorSelector(EnumHand hand, ItemStack stack) {
 		this.hand = hand;
@@ -71,27 +73,35 @@ public class GuiColorSelector extends GuiScreen {
 	public void initGui() {
 		this.startColorButton = new Rectangle(this.width / 2 - 120, this.height / 4 - 35 , 50, 20);
 		this.endColorButton = new Rectangle(this.width / 2 + 70, this.height / 4 - 35, 50, 20);
+		renderParticles.forEach(particle -> {
+			particle.setGuiPosX(this.width);
+			particle.setGuiPosY(this.height);
+		});
 	}
+	
+	private int ticks;
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		List<GuiParticle> newRenderParticle = Lists.newArrayList();
-		if(renderParticles.size() < 15 && new Random().nextFloat() < 0.05f) {
-			renderParticles.add(new GuiParticle());
+		List<GuiFireworkParticle> newRenderParticle = Lists.newArrayList();
+		if(ticks++ % 30 == 0) {
+			GuiFireworkParticle p = new GuiFireworkParticle(this.width, this.height);
+			p.setColor(this.startColor.value);
+			p.setFadeColor(this.endColor.value);
+			p.setFadingColor(true);
+			newRenderParticle.add(p);
 		}
 		renderParticles.forEach(particle -> {
 			if(!particle.isDead()) {
 				newRenderParticle.add(particle);
-			} else {
-				newRenderParticle.add(new GuiParticle());
 			}
 		});
 		this.renderParticles.clear();
 		this.renderParticles.addAll(newRenderParticle);
 		
 		this.drawDefaultBackground();
-//		this.drawCenteredString(fontRenderer, I18n.format("gui.colors.start"), this.width / 2 - 95, this.height / 4 - 50, 0xFFFFFFFF);
-//		this.drawCenteredString(fontRenderer, I18n.format("gui.colors.end"), this.width / 2 + 95, this.height / 4 - 50, 0xFFFFFFFF);
+		this.drawCenteredString(fontRenderer, I18n.format("gui.colors.start"), this.width / 2 - 95, this.height / 4 - 50, 0xFFFFFFFF);
+		this.drawCenteredString(fontRenderer, I18n.format("gui.colors.end"), this.width / 2 + 95, this.height / 4 - 50, 0xFFFFFFFF);
 
         if(currentSelected != null) {
         	 GlStateManager.enableAlpha();
@@ -140,8 +150,17 @@ public class GuiColorSelector extends GuiScreen {
      		
      		drawBorder(this.width / 2 + 70, this.height / 5 * 4 + 20, this.width / 2 - 70, this.height / 5 * 4, 0xFF000000, 2);
         } else {
+        	int scale = 5;
+        	float jitterX = (new Random().nextFloat() - 0.5f) * 2f;
+        	float jitterY = (new Random().nextFloat() - 0.5f) * 2f;
+
+            GlStateManager.translate(jitterX, jitterY, 0);
+        	GlStateManager.scale(scale, scale, scale);
+        	itemRender.renderItemIntoGUI(new ItemStack(Items.FIREWORKS), this.width / (2 * scale) - 8, this.height / (2 * scale) - 10);
+        	GlStateManager.scale(1f / scale, 1f / scale, 1f / scale);
+            GlStateManager.translate(-jitterX, -jitterY, 0);
         	Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/particle/particles.png")); //TODO: cache
-        	renderParticles.forEach(p -> p.render(this, partialTicks));
+        	renderParticles.forEach(particle -> particle.render(this, partialTicks));
         }
 		
 		int startColor = this.startColor.value;
@@ -155,14 +174,14 @@ public class GuiColorSelector extends GuiScreen {
 		} else if(isMouseOverRect(endColorButton, mouseX, mouseY) || currentSelected == this.endColor) {
 			boxEndColor = 0xFF0078D7;
 		}
-//		this.drawRect(startColorButton.x, startColorButton.y, startColorButton.x + startColorButton.width, startColorButton.y + startColorButton.height, boxStartColor);
-//		this.drawRect(endColorButton.x, endColorButton.y, endColorButton.x + endColorButton.width, endColorButton.y + endColorButton.height, boxEndColor);
+		this.drawRect(startColorButton.x, startColorButton.y, startColorButton.x + startColorButton.width, startColorButton.y + startColorButton.height, boxStartColor);
+		this.drawRect(endColorButton.x, endColorButton.y, endColorButton.x + endColorButton.width, endColorButton.y + endColorButton.height, boxEndColor);
 		
-//		drawHorizontalGradient(endColorButton.x, endColorButton.y + endColorButton.height, startColorButton.x + startColorButton.width, startColorButton.y, startColor, endColor);
-//		drawBorder(startColorButton.x, startColorButton.y, endColorButton.x + endColorButton.width, endColorButton.y + endColorButton.height, 0xFF000000, 2);
+		drawHorizontalGradient(endColorButton.x, endColorButton.y + endColorButton.height, startColorButton.x + startColorButton.width, startColorButton.y, startColor, endColor);
+		drawBorder(startColorButton.x, startColorButton.y, endColorButton.x + endColorButton.width, endColorButton.y + endColorButton.height, 0xFF000000, 2);
 		
-//        GuiScreen.drawRect(startColorButton.x + startColorButton.width + 1, startColorButton.y + 1, startColorButton.x + startColorButton.width - 1, startColorButton.y + startColorButton.height - 1, 0xFF000000);
-//        GuiScreen.drawRect(endColorButton.x - 1, endColorButton.y + 1, endColorButton.x + 1, endColorButton.y + endColorButton.height - 1, 0xFF000000);
+        GuiScreen.drawRect(startColorButton.x + startColorButton.width + 1, startColorButton.y + 1, startColorButton.x + startColorButton.width - 1, startColorButton.y + startColorButton.height - 1, 0xFF000000);
+        GuiScreen.drawRect(endColorButton.x - 1, endColorButton.y + 1, endColorButton.x + 1, endColorButton.y + endColorButton.height - 1, 0xFF000000);
                 
         ColorConfig.SingleConfig config = null;
         if(currentSelected == this.startColor) {
@@ -223,6 +242,15 @@ public class GuiColorSelector extends GuiScreen {
 		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 		if(lightnessBarClicked) {
 			barAmount = MathHelper.clamp((mouseX - this.width / 2 + 70) / 140f, 0f, 1f);
+		}
+	}
+	
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if (keyCode == 1 && this.currentSelected != null) {
+			this.currentSelected = null;
+		} else {
+			super.keyTyped(typedChar, keyCode);
 		}
 	}
 	
