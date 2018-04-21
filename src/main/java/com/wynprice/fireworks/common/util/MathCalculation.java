@@ -142,13 +142,17 @@ public class MathCalculation {
 			} else if (func.equals("tan")) {
 				 outPut = Math.tan(Math.toRadians(outPut));
 			}
-			else throw new MathReaderException("Unknown function: " + func);
+			else {
+				throw new MathReaderException("Unknown function: " + func);
+			}
 		} else {
 			throw new MathReaderException("Unexpected: " + (char)character);
 		}
 
 		if (isNextChar('^')) {
 			outPut = Math.pow(outPut, runFactors());
+		} else if (isNextChar('%')) {
+			outPut %= runFactors();
 		}
 
 		return outPut;
