@@ -2,13 +2,9 @@ package com.wynprice.fireworks.common.data;
 
 import java.util.List;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
 import com.google.common.collect.Lists;
-import com.wynprice.fireworks.common.api.FireworksModRegistery;
 import com.wynprice.fireworks.common.api.FireworkBit;
+import com.wynprice.fireworks.common.api.FireworksModRegistery;
 import com.wynprice.fireworks.common.util.MathReader;
 
 import net.minecraft.entity.player.EntityPlayer;
