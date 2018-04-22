@@ -1,5 +1,7 @@
 package com.wynprice.fireworks.common.util.calculator;
 
+import com.wynprice.fireworks.common.util.calculator.MathReaderException.MathReaderSyntaxException;
+
 /**
  * Used to calculate text calculations
  * @author Wyn Price
@@ -67,8 +69,7 @@ public class MathCalculation {
 		nextCharacter();
 		double output = runExpression();
 		if (pos < input.length()) {
-//			throw new MathReaderException("Unexpected: " + (char)character);
-			System.out.println("sneakythrow");
+			throw new MathReaderException("Unexpected: " + (char)character);
 		}
 		return output;
 	}
@@ -131,7 +132,9 @@ public class MathCalculation {
 		int startPos = this.pos;
 		if (isNextChar('(')) {
 			outPut = runExpression();
-			isNextChar(')');
+			if(!isNextChar(')')) {
+				throw new MathReaderSyntaxException(')', (char)(character));
+			}
 		} else if ((character >= '0' && character <= '9') || character == '.') {
 			while ((character >= '0' && character <= '9') || character == '.') {
 				nextCharacter();
@@ -147,25 +150,29 @@ public class MathCalculation {
 				int startPos2 = this.pos;
 				while(ExtraMathUtils.CHARSET.contains(String.valueOf((char)this.character)) || this.character == '.') {
 					if(character == -1) {
-						throw new MathReaderException("Invalid Syntax, expected ','");
+						throw new MathReaderSyntaxException(',', "the end of input");
 					}
 					nextCharacter();
 				}
 				String basedNumber = input.substring(startPos2, this.pos);
 				if(!isNextChar(',')) {
-					throw new MathReaderException("Invalid Syntax. Expected ','");
+					throw new MathReaderSyntaxException(',', (char)character);
 				}
 				outPut = ExtraMathUtils.parseDouble(basedNumber, runFactors());
-				isNextChar(')');
+				if(!isNextChar(')')) {
+					throw new MathReaderSyntaxException(')', (char)(character));
+				}
 			} else {
 				outPut = runFactors();
 				try {
 					DoubleMathFunctions function = DoubleMathFunctions.valueOf(func.toUpperCase());
 					if(!isPrefixBrace || !isNextChar(',')) {
-						throw new MathReaderException("Invalid Syntax. Expected ','");
+						throw new MathReaderSyntaxException(',', (char)character);
 					}
 					outPut = function.getFunction().apply(outPut, runFactors());
-					isNextChar(')');
+					if(!isNextChar(')')) {
+						throw new MathReaderSyntaxException(')', (char)(character));
+					}
 				} catch (IllegalArgumentException e1) {
 					try {
 						outPut = MathFunction.valueOf(func.toUpperCase()).apply(outPut);

@@ -2,7 +2,12 @@ package com.wynprice.fireworks.common.util.calculator;
 
 import java.util.function.Function;
 
-public enum MathFunction implements Function<Double, Double>{
+/**
+ * The single math functions (one's that require only one input)
+ * @author Wyn Price
+ *
+ */
+public enum MathFunction implements Function<Double, Double> {
 	SQRT(Math::sqrt),
 	CBRT(Math::cbrt),
 	SIN(Math::sin, true),
