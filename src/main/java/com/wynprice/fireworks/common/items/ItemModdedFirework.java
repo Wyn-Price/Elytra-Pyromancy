@@ -7,6 +7,9 @@ import com.wynprice.fireworks.common.data.FireworkData;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
 import com.wynprice.fireworks.common.entities.EntityFirework;
 import com.wynprice.fireworks.common.registries.RegistryFireworkBit;
+import com.wynprice.fireworks.common.util.MathReader;
+import com.wynprice.fireworks.common.util.calculator.ExtraMathUtils;
+import com.wynprice.fireworks.common.util.calculator.MathReaderException;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +35,8 @@ public class ItemModdedFirework extends ItemFirework {
 	
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-	        ItemStack itemstack = player.getHeldItem(hand);
+		System.out.println(MathReader.eval("num(3A, 16)"));
+    	ItemStack itemstack = player.getHeldItem(hand);
     	if (!worldIn.isRemote && isUsable(itemstack)) {
             EntityFirework entityfireworkrocket = new EntityFirework(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), itemstack);
             worldIn.spawnEntity(entityfireworkrocket);

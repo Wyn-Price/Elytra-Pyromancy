@@ -1,8 +1,4 @@
-package com.wynprice.fireworks.common.util;
-
-import java.util.function.Function;
-
-import net.minecraft.util.math.MathHelper;
+package com.wynprice.fireworks.common.util.calculator;
 
 /**
  * Used to calculate text calculations
@@ -26,6 +22,8 @@ public class MathCalculation {
 	 */
 	private int character;
 	
+	private int rootingLevel;	
+	
 	public MathCalculation(String input) {
 		this.input = input;
 	}
@@ -34,7 +32,7 @@ public class MathCalculation {
 	 * Get the next character of the string. Or -1 if there is none
 	 */
 	private void nextCharacter() {
-		character = pos++ < input.length() ? input.charAt(pos) : -1;
+		character = ++pos < input.length() ? input.charAt(pos) : -1;
 	}
 
 	/**
@@ -52,17 +50,25 @@ public class MathCalculation {
 		}
 		return false;
 	}
+	
+	private boolean isNextWord(String ipnut) {
+		for(char c : input.toCharArray()) {
+			
+		}
+		return true;
+	}
 
 	/**
 	 * Gets the output to the expression
 	 * @return the output value
 	 * @throws MathReaderException If something goes wrong
 	 */
-   public double getOutput() throws MathReaderException {
+	public double getOutput() throws MathReaderException {
 		nextCharacter();
 		double output = runExpression();
 		if (pos < input.length()) {
-			throw new MathReaderException("Unexpected: " + (char)character);
+//			throw new MathReaderException("Unexpected: " + (char)character);
+			System.out.println("sneakythrow");
 		}
 		return output;
 	}
@@ -76,7 +82,7 @@ public class MathCalculation {
 	private double runExpression() throws MathReaderException {
 		double x = runMultiplyDivide();
 		while(true) {
-			if(isNextChar('x')) {
+			if(isNextChar('+')) {
 				x += runMultiplyDivide();
 			} else if(isNextChar('-')) {
 				x -= runMultiplyDivide();
@@ -136,11 +142,37 @@ public class MathCalculation {
 				 nextCharacter();
 			}
 			String func = input.substring(startPos, this.pos);
-			outPut = runFactors();
-			try {
-				outPut = MathFunction.valueOf(func.toUpperCase()).apply(outPut);
-			} catch (IllegalArgumentException e) {
-				throw new MathReaderException("Could not find function: " + func);
+			boolean isPrefixBrace = isNextChar('(');
+			if(func.equals("num")) {
+				int startPos2 = this.pos;
+				while(ExtraMathUtils.CHARSET.contains(String.valueOf((char)this.character)) || this.character == '.') {
+					if(character == -1) {
+						throw new MathReaderException("Invalid Syntax, expected ','");
+					}
+					nextCharacter();
+				}
+				String basedNumber = input.substring(startPos2, this.pos);
+				if(!isNextChar(',')) {
+					throw new MathReaderException("Invalid Syntax. Expected ','");
+				}
+				outPut = ExtraMathUtils.parseDouble(basedNumber, runFactors());
+				isNextChar(')');
+			} else {
+				outPut = runFactors();
+				try {
+					DoubleMathFunctions function = DoubleMathFunctions.valueOf(func.toUpperCase());
+					if(!isPrefixBrace || !isNextChar(',')) {
+						throw new MathReaderException("Invalid Syntax. Expected ','");
+					}
+					outPut = function.getFunction().apply(outPut, runFactors());
+					isNextChar(')');
+				} catch (IllegalArgumentException e1) {
+					try {
+						outPut = MathFunction.valueOf(func.toUpperCase()).apply(outPut);
+					} catch (IllegalArgumentException e) {
+						throw new MathReaderException("Could not find function: " + func);
+					}
+				}
 			}
 		} else {
 			throw new MathReaderException("Unexpected: " + (char)character);
@@ -153,51 +185,5 @@ public class MathCalculation {
 		}
 
 		return outPut;
-	}
-	
-	/**
-	 * The Exception thrown with if somthing goes wrong while running an expression
-	 * @author Wyn Price
-	 *
-	 */
-	public static class MathReaderException extends Exception {
-		
-		public MathReaderException(String message) {
-			super(message);
-		}
-	}
-	
-	public static enum MathFunction implements Function<Double, Double>{
-		SQRT(Math::sqrt),
-		SIN(Math::sin, true),
-		ASIN(Math::asin, true),
-		SINH(Math::sinh, true),
-		COS(Math::cos, true),
-		ACOS(Math::acos, true),
-		COSH(Math::cosh, true),
-		TAN(Math::atan, true),
-		ATAN(Math::atan, true),
-		TANH(Math::tanh, true),
-		FLOOR(Math::floor),
-		CEIL(Math::ceil),
-		ROUND(in -> (double)Math.round(in))
-		;
-		
-		private final Function<Double, Double> function;
-		private final boolean useRadians;
-		
-		private MathFunction(Function<Double, Double> function) {
-			this(function, false);
-		}
-		
-		private MathFunction(Function<Double, Double> function, boolean useRadians) {
-			this.function = function;
-			this.useRadians = useRadians;
-		}
-
-		@Override
-		public Double apply(Double t) {
-			return function.apply(useRadians ? Math.toRadians(t) : t);
-		}
-	}
+	}	
 }
