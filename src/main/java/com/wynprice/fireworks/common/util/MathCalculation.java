@@ -1,5 +1,9 @@
 package com.wynprice.fireworks.common.util;
 
+import java.util.function.Function;
+
+import net.minecraft.util.math.MathHelper;
+
 /**
  * Used to calculate text calculations
  * @author Wyn Price
@@ -133,17 +137,10 @@ public class MathCalculation {
 			}
 			String func = input.substring(startPos, this.pos);
 			outPut = runFactors();
-			if (func.equals("sqrt")) {
-				outPut = Math.sqrt(outPut);
-			} else if (func.equals("sin")) {
-				 outPut = Math.sin(Math.toRadians(outPut));
-			} else if (func.equals("cos")) {
-				 outPut = Math.cos(Math.toRadians(outPut));
-			} else if (func.equals("tan")) {
-				 outPut = Math.tan(Math.toRadians(outPut));
-			}
-			else {
-				throw new MathReaderException("Unknown function: " + func);
+			try {
+				outPut = MathFunction.valueOf(func.toUpperCase()).apply(outPut);
+			} catch (IllegalArgumentException e) {
+				throw new MathReaderException("Could not find function: " + func);
 			}
 		} else {
 			throw new MathReaderException("Unexpected: " + (char)character);
@@ -167,6 +164,40 @@ public class MathCalculation {
 		
 		public MathReaderException(String message) {
 			super(message);
+		}
+	}
+	
+	public static enum MathFunction implements Function<Double, Double>{
+		SQRT(Math::sqrt),
+		SIN(Math::sin, true),
+		ASIN(Math::asin, true),
+		SINH(Math::sinh, true),
+		COS(Math::cos, true),
+		ACOS(Math::acos, true),
+		COSH(Math::cosh, true),
+		TAN(Math::atan, true),
+		ATAN(Math::atan, true),
+		TANH(Math::tanh, true),
+		FLOOR(Math::floor),
+		CEIL(Math::ceil),
+		ROUND(in -> (double)Math.round(in))
+		;
+		
+		private final Function<Double, Double> function;
+		private final boolean useRadians;
+		
+		private MathFunction(Function<Double, Double> function) {
+			this(function, false);
+		}
+		
+		private MathFunction(Function<Double, Double> function, boolean useRadians) {
+			this.function = function;
+			this.useRadians = useRadians;
+		}
+
+		@Override
+		public Double apply(Double t) {
+			return function.apply(useRadians ? Math.toRadians(t) : t);
 		}
 	}
 }
