@@ -167,18 +167,18 @@ public class MathCalculation {
 				try {
 					DoubleMathFunctions function = DoubleMathFunctions.valueOf(func.toUpperCase());
 					if(!isPrefixBrace || !isNextChar(',')) {
-						throw new MathReaderSyntaxException(',', (char)character);
+						throw new MathReaderException.MathReaderSyntaxException(',', (char)character);
 					}
-					outPut = function.getFunction().apply(outPut, runFactors());
-					if(!isNextChar(')')) {
-						throw new MathReaderSyntaxException(')', (char)(character));
-					}
+					outPut = function.run(outPut, runFactors());
 				} catch (IllegalArgumentException e1) {
 					try {
 						outPut = MathFunction.valueOf(func.toUpperCase()).apply(outPut);
 					} catch (IllegalArgumentException e) {
 						throw new MathReaderException("Could not find function: " + func);
 					}
+				}
+				if(isPrefixBrace && !isNextChar(')')) {
+					throw new MathReaderException.MathReaderSyntaxException(')', (char)(character));
 				}
 			}
 		} else {
