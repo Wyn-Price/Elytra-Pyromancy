@@ -32,7 +32,6 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 	
 	@SideOnly(Side.CLIENT)
 	protected List<BakedQuad> bakedQuads = Lists.newArrayList();
-	@SideOnly(Side.CLIENT)
 	protected BiFunction<ItemStack, Integer, Integer> tintColorFunction = (itemstack, tint) -> -1;
 	
 	public FireworkBit(Predicate<ItemStack> predicate, String name) {
@@ -50,7 +49,6 @@ public class FireworkBit extends IForgeRegistryEntry.Impl<FireworkBit> {
 		return this;
 	}
 	
-	@SideOnly(Side.CLIENT)
 	public FireworkBit setTintColorFunction(BiFunction<ItemStack, Integer, Integer> tintColorFunction) {
 		this.tintColorFunction = tintColorFunction;
 		return this;

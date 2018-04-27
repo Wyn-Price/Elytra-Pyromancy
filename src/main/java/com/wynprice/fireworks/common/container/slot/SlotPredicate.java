@@ -13,14 +13,12 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotPredicate extends SlotItemHandler {
 
-	protected final ContainerFireworkTable container;
 	protected final Predicate<ItemStack> predicate;
 	protected final ItemStack stack;
 	protected int stackSize = 64;
 	
-	public SlotPredicate(ContainerFireworkTable container, ItemStack stack, int xPosition, int yPosition, Predicate<ItemStack> predicate) {
+	public SlotPredicate(ItemStack stack, int xPosition, int yPosition, Predicate<ItemStack> predicate) {
 		super(new ItemStackHandler(NonNullList.withSize(1, stack)), 0, xPosition, yPosition);
-		this.container = container;
 		this.predicate = predicate;
 		this.stack = stack;
 	}

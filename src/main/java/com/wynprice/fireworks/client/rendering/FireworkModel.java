@@ -31,6 +31,16 @@ public class FireworkModel extends BakedModelWrapper<IBakedModel> {
 	
 	public FireworkModel(IBakedModel originalModel) {
 		super(originalModel);
+		originalModel.getQuads(null, null, 0L).forEach(quad -> {
+			int[] aint = quad.getVertexData();
+			EnumFacing dir = quad.getFace();
+			for(int i = 0; i < 4; i++) {
+				int pos = (aint.length / 4) * i;
+				aint[pos + 0] = Float.floatToRawIntBits(Float.intBitsToFloat(aint[pos + 0]) - dir.getFrontOffsetX() * 0.00001f);
+				aint[pos + 1] = Float.floatToRawIntBits(Float.intBitsToFloat(aint[pos + 1]) - dir.getFrontOffsetY() * 0.00001f);
+				aint[pos + 2] = Float.floatToRawIntBits(Float.intBitsToFloat(aint[pos + 2]) - dir.getFrontOffsetZ() * 0.00001f);
+			}
+		});
 	}
 	
 	@Override

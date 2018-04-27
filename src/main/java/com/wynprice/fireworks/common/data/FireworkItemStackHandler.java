@@ -43,7 +43,9 @@ public class FireworkItemStackHandler extends ItemStackHandler {
 		List<Pair<ItemStack, List<FireworkBit>>> list = Lists.newArrayList();
 		for(int i = 0; i < getSlots(); i++) {
 			ItemStack itemstack = getStackInSlot(i);
-			list.add(Pair.of(itemstack, FireworkDataHelper.getBits(itemstack)));
+			if(!itemstack.isEmpty()) {
+				list.add(Pair.of(itemstack, FireworkDataHelper.getBits(itemstack)));
+			}
 		}
 		return list;
 	}

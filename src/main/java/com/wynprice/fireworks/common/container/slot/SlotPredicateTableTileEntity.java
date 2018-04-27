@@ -8,9 +8,12 @@ import net.minecraft.item.ItemStack;
 
 public class SlotPredicateTableTileEntity extends SlotPredicate {
 
+	private final ContainerFireworkTable container;
+	
 	public SlotPredicateTableTileEntity(ContainerFireworkTable container, ItemStack stack, int xPosition, int yPosition,
 			Predicate<ItemStack> predicate) {
-		super(container, stack, xPosition, yPosition, predicate);
+		super(stack, xPosition, yPosition, predicate);
+		this.container = container;
 	}
 	
 	@Override

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.FireworksMod;
-import com.wynprice.fireworks.common.items.ItemColorBit;
+import com.wynprice.fireworks.common.handlers.GuiHandler;
+import com.wynprice.fireworks.common.items.ItemGuiBit;
 import com.wynprice.fireworks.common.items.ItemModdedFirework;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -32,7 +33,7 @@ public class RegistryItem {
 	public static final Item DURATION_BIT = Items.AIR;
 	public static final Item NO_PARTICLES_BIT = Items.AIR;
 	public static final Item PARTICLE_COLOR_BIT = Items.AIR;
-
+	public static final Item POTION_BIT = Items.AIR;
 	
 	@SubscribeEvent
 	public static void onItemRegistry(RegistryEvent.Register<Item> event) {
@@ -43,7 +44,9 @@ public class RegistryItem {
 				new Item().setRegistryName("autoflight_bit").setUnlocalizedName("autoflight_bit"),
 				new Item().setRegistryName("duration_bit").setUnlocalizedName("duration_bit"),
 				new Item().setRegistryName("no_particles_bit").setUnlocalizedName("no_particles_bit"),
-				new ItemColorBit().setRegistryName("particle_color_bit").setUnlocalizedName("particle_color_bit")
+				new ItemGuiBit(GuiHandler.COLORSELECTOR).setRegistryName("particle_color_bit").setUnlocalizedName("particle_color_bit"),
+				new ItemGuiBit(GuiHandler.POTIONSELECTOR).setRegistryName("potion_bit").setUnlocalizedName("potion_bit")
+
 		);
 	}
 

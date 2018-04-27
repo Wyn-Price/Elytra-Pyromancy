@@ -1,8 +1,7 @@
 package com.wynprice.fireworks.common.items;
 
-import com.wynprice.fireworks.client.gui.GuiColorSelector;
+import com.wynprice.fireworks.FireworksMod;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,21 +9,18 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemColorBit extends Item {
+public class ItemGuiBit extends Item {	
+	
+	private final int guiId;
+	
+	public ItemGuiBit(int guiId) {
+		this.guiId = guiId;	
+	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		if(worldIn.isRemote) {
-			openGUI(handIn, playerIn.getHeldItem(handIn));
-		}
+		playerIn.openGui(FireworksMod.getInstance(), guiId, worldIn, handIn.ordinal(), 0, 0);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 	}
-	
-	@SideOnly(Side.CLIENT)
-	private void openGUI(EnumHand hand,ItemStack stack) {
-		Minecraft.getMinecraft().displayGuiScreen(new GuiColorSelector(hand, stack));
-	}	
 }

@@ -35,7 +35,6 @@ public class ItemModdedFirework extends ItemFirework {
 	
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		System.out.println(MathReader.eval("num(3A, 16)"));
     	ItemStack itemstack = player.getHeldItem(hand);
     	if (!worldIn.isRemote && isUsable(itemstack)) {
             EntityFirework entityfireworkrocket = new EntityFirework(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), itemstack);

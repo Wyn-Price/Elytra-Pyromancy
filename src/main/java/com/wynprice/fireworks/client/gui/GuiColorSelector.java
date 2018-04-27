@@ -10,7 +10,6 @@ import java.util.Random;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
-import org.omg.CORBA.BooleanHolder;
 
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.FireworksMod;
@@ -22,15 +21,11 @@ import io.netty.util.internal.IntegerHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFirework;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;

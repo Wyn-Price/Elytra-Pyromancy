@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 import org.omg.CORBA.DoubleHolder;
 import org.omg.CORBA.FloatHolder;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import com.google.common.collect.Lists;
 import com.wynprice.fireworks.common.api.FireworkBit;
@@ -31,6 +32,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -161,13 +164,21 @@ public class EntityFirework extends Entity {
                 {
                     Vec3d vec3d = this.boostedEntity.getLookVec();
                     ItemStack itemstack = (ItemStack)this.dataManager.get(FIREWORK_ITEM);
-                    List<FireworkBit> bits = FireworkDataHelper.readDataFromStack(itemstack).getHandler().getBits();
+                    List<Pair<ItemStack, List<FireworkBit>>> bits = FireworkDataHelper.readDataFromStack(itemstack).getHandler().getMappedBits();
                     FloatHolder speed = new FloatHolder(2);
                     bits.forEach(bit -> {
-                    	if(bit == RegistryFireworkBit.SPEED) {
-                    		speed.value += 0.25;//TODO: CONFIG
-                    	} else if(bit == RegistryFireworkBit.SLOW) {
+                    	if(bit.getRight().contains(RegistryFireworkBit.SPEED)) {
+                    		speed.value += 0.25;//TODO: 
+                    	} else if(bit.getRight().contains(RegistryFireworkBit.SLOW)) {
                     		speed.value -= 0.25;
+                    	} else if(bit.getRight().contains(RegistryFireworkBit.POTION)) {
+                    		if(!world.isRemote) {
+                    			for(PotionEffect effect : PotionUtils.getEffectsFromStack(new ItemStack(bit.getLeft().getOrCreateSubCompound("potion_bit_item")))) {
+                    				if(!effect.getPotion().isInstant()) {
+                        				this.boostedEntity.addPotionEffect(new PotionEffect(effect.getPotion(), 210, effect.getAmplifier()));
+                    				}
+                    			}
+                    		}
                     	}
                     });
                     double d0 = MathHelper.clamp(speed.value, 0D, 10D);

@@ -1,9 +1,10 @@
 package com.wynprice.fireworks.client.handler;
 
+import java.util.List;
+
 import com.wynprice.fireworks.FireworksMod;
-import com.wynprice.fireworks.common.data.FireworkData;
+import com.wynprice.fireworks.common.api.FireworkBit;
 import com.wynprice.fireworks.common.data.FireworkDataHelper;
-import com.wynprice.fireworks.common.data.FireworkItemStackHandler;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,12 @@ public class HandlerItemColors {
 				return -1;
 			}
 			ItemStack inStack = FireworkDataHelper.readDataFromStack(stack).getHandler().getStackInSlot(Math.floorDiv(tint % 100000, 1000) - 1);
-			return FireworkDataHelper.getBits(inStack).get(Math.floorDiv(tint, 100000) - 1).getTintColor(inStack, tint % 1000);
+			List<FireworkBit> list = FireworkDataHelper.getBits(inStack);
+			int index = Math.floorDiv(tint, 100000) - 1;
+			if(list.size() <= index) {
+				return -1;
+			}
+			return list.get(index).getTintColor(inStack, tint % 1000);
 		}, Items.FIREWORKS);
 	}
 }

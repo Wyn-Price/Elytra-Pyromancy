@@ -1,0 +1,8 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "fireworks:bits/particle_color_start",
+        "layer1": "fireworks:bits/particle_color_middle",
+        "layer2": "fireworks:bits/particle_color_end"
+    }
+}
